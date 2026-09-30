@@ -47,14 +47,133 @@
       <div class="hero-visual reveal">
         <div class="portrait-frame">
           <div class="portrait-placeholder">
+
+<div class="video-container">
+
     <video
         id="myVideo"
-        autoplay
         playsinline
         preload="auto"
         width="100%">
         <source src="amvideo.MP4" type="video/mp4">
     </video>
+
+    <button id="playButton" class="play-button">▶</button>
+
+</div>
+
+<style>
+.video-container {
+    position: relative;
+    width: 100%;
+}
+
+.video-container video {
+    display: block;
+    width: 100%;
+}
+
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 70px;
+    height: 70px;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: rgba(0, 0, 0, 0.75);
+    color: white;
+
+    font-size: 30px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 10;
+}
+
+.play-button:hover {
+    background: rgba(0, 0, 0, 0.9);
+}
+
+.play-button.hidden {
+    display: none;
+}
+</style>
+
+<script>
+const video = document.getElementById("myVideo");
+const playButton = document.getElementById("playButton");
+
+
+// ------------------------------------
+// TRY AUTOPLAY WITH SOUND
+// ------------------------------------
+window.addEventListener("load", async () => {
+
+    video.muted = false;
+
+    try {
+
+        await video.play();
+
+        // Browser allowed sound autoplay
+        playButton.classList.add("hidden");
+
+    } catch (error) {
+
+        // Browser blocked autoplay
+        // DO NOT play muted
+        playButton.classList.remove("hidden");
+
+        console.log("Autoplay with sound was blocked.");
+    }
+
+});
+
+
+// ------------------------------------
+// USER CLICKS PLAY BUTTON
+// ------------------------------------
+playButton.addEventListener("click", async () => {
+
+    // Make absolutely sure sound is enabled
+    video.muted = false;
+
+    try {
+
+        await video.play();
+
+        // Successfully started
+        playButton.classList.add("hidden");
+
+    } catch (error) {
+
+        console.log("Manual playback failed:", error);
+
+        // Keep button visible
+        playButton.classList.remove("hidden");
+    }
+
+});
+
+
+// ------------------------------------
+// VIDEO FINISHED
+// ------------------------------------
+video.addEventListener("ended", () => {
+
+    playButton.classList.remove("hidden");
+
+});
+</script>
+
 </div>
 
 <script>
